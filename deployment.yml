@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: limits-service
+  labels:
+    app: limits-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: limits-service
+  template:
+    metadata:
+      labels:
+        app: limits-service
+    spec:
+      containers:
+      - name: limits-service
+        image: ravisankar/in28minutes:limits-service-8
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MINIMUM
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: minimum
+        - name: MAXIMUM
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: maximum
